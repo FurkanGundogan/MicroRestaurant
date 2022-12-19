@@ -1,3 +1,2 @@
 # MicroRestaurant
-Udemy Course Project
-In Progress...
+.NET Core Microservices + MVC Frontend | In Progress Udemy Course Project
