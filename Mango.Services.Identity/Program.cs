@@ -48,10 +48,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseIdentityServer();
+
 app.UseAuthorization();
 
-identityDbInitializer.Initialize();
 
+identityDbInitializer.Initialize();
+app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

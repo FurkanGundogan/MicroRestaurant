@@ -1,6 +1,7 @@
 using Mango.Web;
 using Mango.Web.Services;
 using Mango.Web.Services.IServices;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,10 +12,14 @@ SD.ProductAPIBase = builder.Configuration["ServiceUrls:ProductAPI"];
 
 builder.Services.AddScoped<IProductService, ProductService>();
 // Configure Identity Server
+
+
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "Cookies";
     options.DefaultChallengeScheme = "oidc";
+
 
 }).AddCookie("Cookies", c => c.ExpireTimeSpan = TimeSpan.FromMinutes(10))
 .AddOpenIdConnect("oidc", options => {
@@ -27,8 +32,13 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters.RoleClaimType = "role";
     options.Scope.Add("mango");
     options.SaveTokens = true;
+    options.ClaimActions.MapJsonKey("role", "role", "role");
+    options.ClaimActions.MapJsonKey("sub", "sub", "sub");
 
 });
+
+
+
 // Configure Identity Server
 var app = builder.Build();
 
@@ -47,6 +57,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
