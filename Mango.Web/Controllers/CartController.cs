@@ -24,6 +24,7 @@ namespace Mango.Web.Controllers
         [ActionName("ApplyCoupon")]
         public async Task<IActionResult> ApplyCoupon(CartDto cartDto)
         {
+            //cartDto.CartDetails = new () { };
             var userId = User.Claims.Where(x => x.Type == "sub")?.FirstOrDefault().Value;
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var response = await _cartService.ApplyCoupon<ResponseDto>(cartDto, accessToken);
